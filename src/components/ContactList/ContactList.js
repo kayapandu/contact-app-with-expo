@@ -29,6 +29,9 @@ const dataContact = [
 class ContactList extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+            dataContact: []
+        };
     };
 
     componentDidMount(){
@@ -37,7 +40,8 @@ class ContactList extends React.Component {
 
     _getContactData = () => {
         axios.get('https://simple-contact-crud.herokuapp.com/contact')
-            .then(res => console.log(res.data))
+            .then(res => res.data.data)
+            .then(data => this.setState({ dataContact: data}))
             .catch(err => console.log(err));
     };
 
@@ -46,10 +50,10 @@ class ContactList extends React.Component {
             <View style={styles.container}>
                 <Text>This is Contact List Page</Text>
                 <FlatList
-                    data={dataContact}
+                    data={this.state.dataContact}
                     renderItem={({item}) => (
                             <View>
-                                <Text>{item.firstName}</Text>
+                                <Text>{`${item.firstName} ${item.lastName}`}</Text>
                             </View>
                         )
                     }
